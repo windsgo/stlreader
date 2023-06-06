@@ -1,0 +1,21 @@
+*.so
+src/*.so
+src/*.a
+src/gen_contour
+*.txt
+*.csv
+src/*.csv
+src/*.txt
+*.png
+src/*.png
+
+# cmake
+build
+build/**
+
+# not to ignore
+!CMakeLists.txt
+!src/CMakeLists.txt
+
+*.stl
+*.STL
