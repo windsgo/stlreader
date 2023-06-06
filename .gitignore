@@ -19,3 +19,4 @@ build/**
 
 *.stl
 *.STL
+!bunny_rough_binary.STL
