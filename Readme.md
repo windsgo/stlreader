@@ -1,8 +1,10 @@
 # Usage
 
 - 对于Ubuntu低于20.04，CMAKE版本低于3.15的系统，该CMAKE构建方法可能出错
-- 可以进入src目录进行make构建，查看相关make的Readme说明
-- [src/Readme.md](src/Readme.md)
+- 需要自行修改libboost_python以及libpython3的库搜索方法
+
+- 对于Ubuntu20.04以上，请运行`install_essentials.sh`安装必须库
+
 ## How to build (and clean)
 
 ### Way 1
