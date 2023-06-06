@@ -26,12 +26,31 @@ cmake --build build -j8
 ./run_test.sh # run test
 ```
 
-## Export to Use
+## Export for Python Use
 
-- Copy the `libstlread.so` under `build/lib` to where you want to use it
-- Then in python:(see `test.py`)
+- Copy the `libstlread.so` and `stlreader.py` to where you want to use it
+- The usage of them is written in `test_import.py`.
+- The example tree should be:
+    
+  ```
+  test_folder
+  ├─ stlreader.py
+  ├─ libstlread.so
+  └─ test_import.py
+  ```
+
+- codes in `test_import.py` should be like:
   ```python
-  from libstlread import stlread
-  a = stlread(yourfilename)
-  # ...
+  from stlreader import * # import stlreader module
+  try:
+    reader = stlreader(filename, True)
+    reader.save_contour(50, save_filename)
+    contours : list = reader.get_contour_py(50)
+  except:
+    pass
+  ```
+
+- run:
+  ```bash
+  python3 test_folder/test_import.py "./bunny_rough_binary.STL" 36
   ```

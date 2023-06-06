@@ -8,6 +8,8 @@ src/*.csv
 src/*.txt
 *.png
 src/*.png
+*.pyc
+__pycache__
 
 # cmake
 build
