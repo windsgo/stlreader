@@ -55,10 +55,12 @@ if __name__ == "__main__":
     ax_2d = plt.axes()
     for group in x:
         ax_2d.plot(group[:,0], group[:,1])
+    plt.axis("equal")
+    plt.xlabel("x")
+    plt.ylabel("y")
     # 先保存一张二维图
     plt.title(stl_file + "_contour_py_" + str(z))
     plt.savefig(stl_file + "_contour_py_" + str(z) + ".png", dpi=900)
-    plt.axis("equal")
     plt.show()
     
     ## 3d
@@ -91,6 +93,8 @@ if __name__ == "__main__":
     # ax.scatter(m[::down_s_ratio,0], m[::down_s_ratio,1], m[::down_s_ratio,2], s=0.1, marker='.', alpha=0.4)
     ax.plot(m[::down_s_ratio,0], m[::down_s_ratio,1], m[::down_s_ratio,2], marker='.', alpha=1.0, linestyle="", markersize=1)
     
+    plt.xlabel("x")
+    plt.ylabel("y")
     try:
         plt.axis('tight')
         plt.axis('equal')
