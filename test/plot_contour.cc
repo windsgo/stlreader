@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
             z_vec.push_back(std::stof(argv[i]));
         }
     } else {
-        std::cerr << "Usage: gen_contour [filename] [z1] ([z2] ... )" << std::endl;
+        std::cerr << "Usage: plot_contour [filename] [z1] ([z2] ... )" << std::endl;
         return 1;
     }
 
@@ -46,6 +46,9 @@ int main(int argc, char** argv) {
                 plt::plot(x, y);
             }
             plt::title(ss.str());
+            plt::xlabel("x");
+            plt::ylabel("y");
+            plt::axis("equal");
             // plt::legend();
             ss << ".png";
             plt::save(ss.str(), 600);

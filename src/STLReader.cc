@@ -348,6 +348,24 @@ py::list STLReader::get_contour_py(float z)
 
     return py_list;
 }
+
+np::ndarray STLReader::get_verts_py() const
+{
+    np::initialize();
+    py::tuple shape = py::make_tuple(_vert_vec.size(), 3);
+    np::dtype type = np::dtype::get_builtin<float>();
+    np::ndarray points = np::zeros(shape, type);
+    ::std::size_t i = 0;
+    for (const auto& vert : _vert_vec) {
+        points[i][0] = vert->point.x;
+        points[i][1] = vert->point.y;
+        points[i][2] = vert->point.z;
+        ++i;
+    }
+
+    return points;
+}
+
 #endif
 
 void STLReader::_update_progress(const STLReader::Progress_t& progress) {
@@ -377,6 +395,7 @@ BOOST_PYTHON_MODULE(libstlread)
         .def("save_indices", &stlreader::STLReader::save_indices, save_indices_overloads())
         .def("save_contour", &stlreader::STLReader::save_contour)
         .def("get_contour_py", &stlreader::STLReader::get_contour_py)
-        .def("set_print", &stlreader::STLReader::set_print);
+        .def("set_print", &stlreader::STLReader::set_print)
+        .def("get_verts_py", &stlreader::STLReader::get_verts_py);
 }
 #endif

@@ -175,8 +175,11 @@ public:
     bool contour_gen_finished()     const {return _contour_gen_progress.finished();}
     float contour_gen_progress()    const {return _contour_gen_progress.progress();}
 
+    const ::std::vector<Vert::ptr>& get_verts() const {return _vert_vec;}
+
 #ifdef PYTHON_EXPORT
     py::list get_contour_py(float z);
+    np::ndarray get_verts_py() const;
 #endif
 
 private:
