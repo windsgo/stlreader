@@ -10,6 +10,7 @@ src/*.txt
 src/*.png
 *.pyc
 __pycache__
+.vscode
 
 # cmake
 build

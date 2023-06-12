@@ -61,6 +61,12 @@ void STLReader::_init()
         {
             // std::cout << "vert:j=" << j << std::endl;
             Vert::ptr vert = std::make_shared<Vert>(face_block.vertex[j]);
+
+            if (vert->point.z == 354) {
+                std::cout << vert->point.x << ", " << vert->point.y 
+                << ", " << vert->point.z << std::endl;
+            }
+
             // std::cout << *vert << std::endl;
             // auto exist_vert = _vert_set.find(*vert);
             // if (exist_vert == _vert_set.end()) {
@@ -218,6 +224,14 @@ std::list<std::list<PointXYZ> > STLReader::get_contour(float z)
 
 std::list<PointXYZ> STLReader::_contour_handle_one_circle(float z, Edge::ptr start_edge)
 {
+    // std::cout << __PRETTY_FUNCTION__ << std::endl;
+    // std::cout << start_edge->v_start.lock()->point.x << std::endl;
+    // std::cout << start_edge->v_start.lock()->point.y << std::endl;
+    // std::cout << start_edge->v_end.lock()->point.x << std::endl;
+    // std::cout << start_edge->v_end.lock()->point.y << std::endl;
+    // std::cout << _edge_to_be_handled_set.size() << std::endl;
+    // std::cout << _edge_to_be_handled_set.empty() << std::endl;
+
     std::list<PointXYZ> crossed_verts_list;
 
     if (!_is_edge_crossed(start_edge, z)) {
@@ -231,7 +245,10 @@ std::list<PointXYZ> STLReader::_contour_handle_one_circle(float z, Edge::ptr sta
         }
         // assert(_is_edge_crossed(edge, z));
         crossed_verts_list.push_back(_get_crossed_point(edge, z));
-        _edge_to_be_handled_set.erase(edge);
+        auto ret = _edge_to_be_handled_set.erase(edge);
+        if (ret != 1) {
+            throw STLReaderException("erase failed");
+        }
     };
 
     submit_crossd_edge(cur_edge);
@@ -250,6 +267,12 @@ std::list<PointXYZ> STLReader::_contour_handle_one_circle(float z, Edge::ptr sta
         if (!_is_edge_crossed(cur_edge, z)) {
             // if 2nd not crossed, go to the 3rd, which must cross
             cur_edge = cur_edge->e_next.lock();
+        } else {
+            /* 有可能有三个边都判定交点的情况，把第三条边也从set中剔除 */
+            auto third_edge = cur_edge->e_next.lock();
+            if (_is_edge_crossed(third_edge, z)) {
+                _edge_to_be_handled_set.erase(third_edge);
+            }
         }
 
         submit_crossd_edge(cur_edge);
@@ -287,6 +310,9 @@ std::list<PointXYZ> STLReader::_contour_handle_one_circle(float z, Edge::ptr sta
             break;
         }
     }
+
+    // std::cout << "crossed_verts_list" << crossed_verts_list.size() << std::endl;
+    // std::cout << "left size" << _edge_to_be_handled_set.size() << std::endl;
 
     return crossed_verts_list;
 }
